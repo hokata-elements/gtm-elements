@@ -1,14 +1,14 @@
 # gtm-elements
 Useful Google Tag Manager Scripts
 
-## Already implemented functions
+## Already implemented functions as GTM Variables
 1. Data object with Session relevant Informations (persist Values in sessionStorage)
    - start
    - source
    - medium
 2. Additional Page-Performace Data (send to GA in one event)
    - Count of redirects on current Host
-   - Vavigation Type ("navigate", "reload", "back_forward" or "prerender)
+   - Navigation Type ("navigate", "reload", "back_forward" or "prerender)
    - Time to first Byte
    - First Paint
    - First Contenful paint
