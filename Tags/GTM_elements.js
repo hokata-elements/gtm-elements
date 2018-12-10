@@ -25,9 +25,25 @@
     GTM_elements.page_performance = {{GTM_elements.page_performance SCRIPT}}();
     GTM_elements.page_performance.Init();
   
-    if({{Debug Mode}}){
-      GTM_elements.info_layer = {{GTM_elements.info_layer SCRIPT}}();
+    if(1 || {{Debug Mode}}){
+      GTM_elements.info_layer = {{GTM_elements.info_layer SCRIPT}}();    
+      var sDate = '-';
+      if(GTM_elements.session.data && GTM_elements.session.data.start){
+        var aDate = new Date(GTM_elements.session.data.start);
+        sDate = aDate.toLocaleString('de-DE');
+      }
       GTM_elements.info_layer.Init();
+      GTM_elements.info_layer.infoVars = {
+        'Session Start' : sDate,
+        'Session Source' : GTM_elements.session.data.source,
+        'Session Medium' : GTM_elements.session.data.medium,
+        'Performance redirectCount' : GTM_elements.page_performance.data.redirectCount,
+        'Performance navigationType' : GTM_elements.page_performance.data.navigationType,
+        'Performance TTFB' : GTM_elements.page_performance.data.TTFB,
+        'Performance FP' : GTM_elements.page_performance.data.FP,
+        'Performance FCP' : GTM_elements.page_performance.data.FCP,
+      };
+      GTM_elements.info_layer.UpdateInfoLayer();
     }
     
   })(document);
