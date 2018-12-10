@@ -14,6 +14,8 @@ Useful Google Tag Manager Scripts
    - First Contenful paint
 3. Info HTML-Layer for most important GTM Values
 
+**Full Script import:** [GTM-ImportContainer.json](https://github.com/hokata-elements/gtm-elements/blob/master/GTM-ImportContainer.json)
+
 ## in the development process
 4. GTM_elements.ec_cart: Passive cart interaction tracking
 5. GTM_elements.ec_checkout: Passive checkout step tracking
