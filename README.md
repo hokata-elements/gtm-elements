@@ -108,3 +108,37 @@ uaData-Event Trigger and Analytics-Event Tag to send this data to GA as event.
 
 </script>
 ```
+
+## GTM_elements.session configuration
+
+**default source / medium setting**
+```JSON
+    session.oRefInclude = {
+      // organic
+      'google' : 'organic',
+      'bing.com' : 'organic',
+      'msn.com' : 'organic',
+      't-online.de' : 'organic',
+      'yahoo.com' : 'organic',
+      'zapmeta.de' : 'organic',
+      'freenet.de' : 'organic',
+      'duckduckgo.com' : 'organic',
+      'ecosia.org' : 'organic',
+      'metager.de' : 'organic',
+      'wow.de' : 'organic',
+      'avira.com' : 'organic',
+      'web.de' : 'organic',
+      // social
+      'facebook.com' : 'social',
+      'twitter.com' : 'social',
+      'instagram.com' : 'social',
+      'youtube.com' : 'social',
+      'pinterest.com' : 'social',
+      'linkedin.com' : 'social',
+      'xing.com' : 'social',
+      'blog' : 'social',
+      // display
+      'criteo' : 'display',
+    };
+```
+Currently the configuration has to be set in the session-script. Later this will be possible in the GTM_elements Tag.
