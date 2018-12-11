@@ -5,7 +5,7 @@ Useful Google Tag Manager Scripts
 ![GTM Elements Structure](https://raw.githubusercontent.com/hokata-elements/gtm-elements/master/img/GTM-elements-structure.png)
 
 ## Already implemented functions as GTM Variables
-1. Data object with Session relevant Informations (persist Values in sessionStorage)
+1. Data object with Session relevant Informations (cached data in sessionStorage)
    - start
    - source
    - medium
@@ -27,8 +27,8 @@ Useful Google Tag Manager Scripts
     "eventValue": 94
 }
 ```
-Some additional DataLayer Varables (eventAction and eventLabel),
-uaData-Event Trigger and Analytics-Event Tag maybe needed
+Maybe you need some additional DataLayer Variables (eventAction and eventLabel),
+uaData-Event Trigger and Analytics-Event Tag to send this data to GA as event.
 
 
 
