@@ -51,3 +51,61 @@ uaData-Event Trigger and Analytics-Event Tag maybe needed
 - Performance TTFB (GTM_elements.page_performance.data.TTFB)
 - Performance FP (GTM_elements.page_performance.data.FP)
 - Performance FCP (GTM_elements.page_performance.data.FCP)
+
+
+## Example for GTM_elements (Custom HTML-Tag)
+```
+<script>
+  (function(document) {
+    window.dataLayer = window.dataLayer || [];
+    
+    // setup GTM_elements as empty object
+    var GTM_elements = {};
+    
+    // Load GTM_elements.session SCRIPT as object from a custom JavaScript Variable
+    GTM_elements.session = {{GTM_elements.session SCRIPT}}();
+    // Init GTM_elements.session script
+    GTM_elements.session.Init();
+    
+    // Load GTM_elements.page_performance SCRIPT as object from a custom JavaScript Variable
+    GTM_elements.page_performance = {{GTM_elements.page_performance SCRIPT}}();
+    // Init GTM_elements.page_performance script
+    GTM_elements.page_performance.Init();
+    
+    // check GTM Debug Mode and draw Info Layer
+    if({{Debug Mode}}){
+    
+     // Load GTM_elements.info_layer SCRIPT as object from a custom JavaScript Variable
+      GTM_elements.info_layer = {{GTM_elements.info_layer SCRIPT}}(); 
+      
+      // prepare date info
+      var sDate = '-';
+      
+      // check cached session data
+      if(GTM_elements.session.data && GTM_elements.session.data.start){
+        var aDate = new Date(GTM_elements.session.data.start);
+        sDate = aDate.toLocaleString('de-DE');
+      }
+      
+      // Init GTM_elements.info_layer script
+      GTM_elements.info_layer.Init();
+      
+      // prepare information layer data
+      GTM_elements.info_layer.infoVars = {
+        'Session Start' : sDate,
+        'Session Source' : GTM_elements.session.data.source,
+        'Session Medium' : GTM_elements.session.data.medium,
+        'Performance redirectCount' : GTM_elements.page_performance.data.redirectCount,
+        'Performance navigationType' : GTM_elements.page_performance.data.navigationType,
+        'Performance TTFB' : GTM_elements.page_performance.data.TTFB,
+        'Performance FP' : GTM_elements.page_performance.data.FP,
+        'Performance FCP' : GTM_elements.page_performance.data.FCP,
+      };
+      // draw information layer
+      GTM_elements.info_layer.UpdateInfoLayer();
+    }
+    
+  })(document);
+
+</script>
+```
