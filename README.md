@@ -2,7 +2,7 @@
 Useful Google Tag Manager Scripts
 
 ## GTM Elements Structure
-![GTM Elements Structure](https://raw.githubusercontent.com/hokata-elements/gtm-elements/blob/master/img/GTM-elements-structure.png)
+![GTM Elements Structure](https://raw.githubusercontent.com/hokata-elements/gtm-elements/master/img/GTM-elements-structure.png)
 
 ## Already implemented functions as GTM Variables
 1. Data object with Session relevant Informations (persist Values in sessionStorage)
