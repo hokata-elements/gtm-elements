@@ -111,7 +111,7 @@ uaData-Event Trigger and Analytics-Event Tag to send this data to GA as event.
 
 ## GTM_elements.session configuration
 
-**default source / medium setting**
+default **source / medium** settings
 ```JavaScript
     session.oRefInclude = {
       // organic
@@ -141,4 +141,4 @@ uaData-Event Trigger and Analytics-Event Tag to send this data to GA as event.
       'criteo' : 'display',
     };
 ```
-Currently the configuration has to be set in the session-script. Later this will be possible in the GTM_elements Tag.
+Currently the configuration has to be set in the **GTM_elements.session SCRIPT**. Later this will be possible in the GTM_elements Tag.
