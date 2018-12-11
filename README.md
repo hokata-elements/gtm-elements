@@ -6,12 +6,26 @@ Useful Google Tag Manager Scripts
    - start
    - source
    - medium
-2. Additional Page-Performace Data (send to GA in one event)
+2. Additional Page-Performace Data (send to GA in one single event)
    - Count of redirects on current Host
    - Navigation Type ("navigate", "reload", "back_forward" or "prerender)
    - Time to first Byte
    - First Paint
    - First Contenful paint
+   
+DataLayer push event example for Page-Performace Data:
+```
+{
+    "event": "uaData",
+    "eventCategory": "Performance",
+    "eventAction": "redirectCount|navigationType|TTFB|FP|FCP",
+    "eventLabel": "0|reload|33|94|94",
+    "eventValue": 94
+}
+Some additional DataLayer Varables (eventAction and eventLabel), uaData-Event Trigger and Analytics-Event Tag maybe needed
+```
+
+
 3. Info HTML-Layer for most important GTM Values
 
 **Full Script import:** [GTM-ImportContainer.json](https://github.com/hokata-elements/gtm-elements/blob/master/GTM-ImportContainer.json)
