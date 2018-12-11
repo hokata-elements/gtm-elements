@@ -112,7 +112,7 @@ uaData-Event Trigger and Analytics-Event Tag to send this data to GA as event.
 ## GTM_elements.session configuration
 
 **default source / medium setting**
-```JSON
+```JavaScript
     session.oRefInclude = {
       // organic
       'google' : 'organic',
