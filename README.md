@@ -18,7 +18,7 @@ Useful Google Tag Manager Scripts
    - First Contenful paint
    
 **DataLayer push event example for Page-Performace Data:**
-```
+```JSON
 {
     "event": "uaData",
     "eventCategory": "Performance",
@@ -26,10 +26,9 @@ Useful Google Tag Manager Scripts
     "eventLabel": "0|reload|33|94|94",
     "eventValue": 94
 }
+```
 Some additional DataLayer Varables (eventAction and eventLabel),
 uaData-Event Trigger and Analytics-Event Tag maybe needed
-```
-
 
 
 
@@ -54,7 +53,7 @@ uaData-Event Trigger and Analytics-Event Tag maybe needed
 
 
 ## Example for GTM_elements (Custom HTML-Tag)
-```
+```JavaScript
 <script>
   (function(document) {
     window.dataLayer = window.dataLayer || [];
