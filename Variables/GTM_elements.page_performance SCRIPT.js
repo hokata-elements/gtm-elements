@@ -21,14 +21,14 @@ function() {
       
       var perfEntries = performance.getEntriesByType("navigation");
       var perfEntry = perfEntries[0].toJSON();
-      
+console.log(perfEntry);
       page_performance.data.redirectCount = perfEntry.redirectCount;
       page_performance.data.navigationType = perfEntry.type;
       page_performance.data.TTFB = page_performance.convertTimestamp(perfEntry.responseStart);
-      
+
       page_performance.trackPaint(window.performance);
       
-      if(page_performance.data.FP == '-' || page_performance.data.FCP == '-'){
+      if(typeof PerformanceObserver != "undefined" && (page_performance.data.FP == '-' || page_performance.data.FCP == '-')){
         var observer = new PerformanceObserver(function(list, obj) {
           page_performance.trackPaint(list);
         });
@@ -48,7 +48,8 @@ function() {
         page_performance.data.FCP = page_performance.convertTimestamp(perfEntry.startTime);
       }
     }
-    if(page_performance.data.FP != '-' && page_performance.data.FCP != '-'){
+    var pushNow = false;
+    if(typeof PerformanceObserver == "undefined" || (page_performance.data.FP != '-' && page_performance.data.FCP != '-')){
       window.dataLayer = window.dataLayer || [];
       
       var aInfo = ['redirectCount', 'navigationType', 'TTFB', 'FP', 'FCP'];
@@ -67,6 +68,7 @@ function() {
         'eventValue':page_performance.data.FCP
       });
       // console.log(aAction.join('|')+' ~ '+aLabel.join('|'));
+      
     }
   };
     
