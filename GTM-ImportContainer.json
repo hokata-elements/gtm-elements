@@ -1,6 +1,6 @@
 {
     "exportFormatVersion": 2,
-    "exportTime": "2018-12-11 16:17:39",
+    "exportTime": "2018-12-12 15:53:21",
     "containerVersion": {
         "path": "accounts/136157975/containers/10605599/versions/0",
         "accountId": "136157975",
@@ -15,7 +15,7 @@
             "usageContext": [
                 "WEB"
             ],
-            "fingerprint": "1544545032341",
+            "fingerprint": "1544629841545",
             "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/136157975/containers/10605599/workspaces?apiLink=container"
         },
         "tag": [
@@ -37,7 +37,7 @@
                         "value": "false"
                     }
                 ],
-                "fingerprint": "1544544298499",
+                "fingerprint": "1544629927701",
                 "firingTriggerId": [
                     "2147479553"
                 ],
@@ -73,10 +73,10 @@
                     {
                         "type": "TEMPLATE",
                         "key": "javascript",
-                        "value": "function() {\n  return function() {\n  \n  var page_performance = {};\n  \n  page_performance.Config = function() {\n    page_performance.data = {};\n    page_performance.data.redirectCount = '-'; // \n    page_performance.data.navigationType = '-'; // \"navigate\", \"reload\", \"back_forward\" or \"prerender\n    page_performance.data.TTFB = '-'; // Time to first Byte\n    page_performance.data.FP = '-'; // First Paint, better as Event: (https://www.sitepen.com/blog/2017/10/06/improving-performance-with-the-paint-timing-api/)\n    page_performance.data.FCP = '-'; // First Contentful Paint\n    page_performance.data.FID = ''; // First Input Delay, better as Event: (https://github.com/GoogleChromeLabs/first-input-delay)\n  };\n  \n  page_performance.Init = function() {\n    page_performance.Config();\n    \n    if (!!window.PerformanceNavigation) {\n      // https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigationTiming\n      \n      var perfEntries = performance.getEntriesByType(\"navigation\");\n      var perfEntry = perfEntries[0].toJSON();\n      \n      page_performance.data.redirectCount = perfEntry.redirectCount;\n      page_performance.data.navigationType = perfEntry.type;\n      page_performance.data.TTFB = page_performance.convertTimestamp(perfEntry.responseStart);\n      \n      page_performance.trackPaint(window.performance);\n      \n      if(page_performance.data.FP == '-' || page_performance.data.FCP == '-'){\n        var observer = new PerformanceObserver(function(list, obj) {\n          page_performance.trackPaint(list);\n        });\n        observer.observe({entryTypes: [\"paint\"]});\n      }\n    }\n  };\n    \n  page_performance.trackPaint = function(list) {\n    var perfEntries = list.getEntries();\n    for (var i=0; i < perfEntries.length; i++) {\n      var perfEntry = perfEntries[i].toJSON();\n      if(perfEntry.name == 'first-paint'){\n        page_performance.data.FP = page_performance.convertTimestamp(perfEntry.startTime);\n      }\n      if(perfEntry.name == 'first-contentful-paint'){\n        page_performance.data.FCP = page_performance.convertTimestamp(perfEntry.startTime);\n      }\n    }\n    if(page_performance.data.FP != '-' && page_performance.data.FCP != '-'){\n      window.dataLayer = window.dataLayer || [];\n      \n      var aInfo = ['redirectCount', 'navigationType', 'TTFB', 'FP', 'FCP'];\n      var aAction = [];\n      var aLabel = [];\n      for (var i=0; i < aInfo.length; i++) {\n        aAction.push(aInfo[i]);\n        aLabel.push(page_performance.data[aInfo[i]]);\n      }\n      \n      window.dataLayer.push({\n        'event' : 'uaData',\n        'eventCategory':'Performance',\n        'eventAction':aAction.join('|'),\n        'eventLabel':aLabel.join('|'),\n        'eventValue':page_performance.data.FCP\n      });\n      // console.log(aAction.join('|')+' ~ '+aLabel.join('|'));\n    }\n  };\n    \n  page_performance.convertTimestamp = function(iTime) {\n    return Math.round(iTime);\n  };\n    \n  \n  return page_performance;\n\n  };\n  \n}"
+                        "value": "function() {\n  return function() {\n  \n  var page_performance = {};\n  \n  page_performance.Config = function() {\n    page_performance.data = {};\n    page_performance.data.redirectCount = '-'; // \n    page_performance.data.navigationType = '-'; // \"navigate\", \"reload\", \"back_forward\" or \"prerender\n    page_performance.data.TTFB = '-'; // Time to first Byte\n    page_performance.data.FP = '-'; // First Paint, better as Event: (https://www.sitepen.com/blog/2017/10/06/improving-performance-with-the-paint-timing-api/)\n    page_performance.data.FCP = '-'; // First Contentful Paint\n    page_performance.data.FID = ''; // First Input Delay, better as Event: (https://github.com/GoogleChromeLabs/first-input-delay)\n  };\n  \n  page_performance.Init = function() {\n    page_performance.Config();\n    \n    if (!!window.PerformanceNavigation) {\n      // https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigationTiming\n      \n      var perfEntries = performance.getEntriesByType(\"navigation\");\n      var perfEntry = perfEntries[0].toJSON();\nconsole.log(perfEntry);\n      page_performance.data.redirectCount = perfEntry.redirectCount;\n      page_performance.data.navigationType = perfEntry.type;\n      page_performance.data.TTFB = page_performance.convertTimestamp(perfEntry.responseStart);\n\n      page_performance.trackPaint(window.performance);\n      \n      if(typeof PerformanceObserver != \"undefined\" && (page_performance.data.FP == '-' || page_performance.data.FCP == '-')){\n        var observer = new PerformanceObserver(function(list, obj) {\n          page_performance.trackPaint(list);\n        });\n        observer.observe({entryTypes: [\"paint\"]});\n      }\n    }\n  };\n    \n  page_performance.trackPaint = function(list) {\n    var perfEntries = list.getEntries();\n    for (var i=0; i < perfEntries.length; i++) {\n      var perfEntry = perfEntries[i].toJSON();\n      if(perfEntry.name == 'first-paint'){\n        page_performance.data.FP = page_performance.convertTimestamp(perfEntry.startTime);\n      }\n      if(perfEntry.name == 'first-contentful-paint'){\n        page_performance.data.FCP = page_performance.convertTimestamp(perfEntry.startTime);\n      }\n    }\n    var pushNow = false;\n    if(typeof PerformanceObserver == \"undefined\" || (page_performance.data.FP != '-' && page_performance.data.FCP != '-')){\n      window.dataLayer = window.dataLayer || [];\n      \n      var aInfo = ['redirectCount', 'navigationType', 'TTFB', 'FP', 'FCP'];\n      var aAction = [];\n      var aLabel = [];\n      for (var i=0; i < aInfo.length; i++) {\n        aAction.push(aInfo[i]);\n        aLabel.push(page_performance.data[aInfo[i]]);\n      }\n      \n      window.dataLayer.push({\n        'event' : 'uaData',\n        'eventCategory':'Performance',\n        'eventAction':aAction.join('|'),\n        'eventLabel':aLabel.join('|'),\n        'eventValue':page_performance.data.FCP\n      });\n      // console.log(aAction.join('|')+' ~ '+aLabel.join('|'));\n      \n    }\n  };\n    \n  page_performance.convertTimestamp = function(iTime) {\n    return Math.round(iTime);\n  };\n    \n  \n  return page_performance;\n\n  };\n  \n}"
                     }
                 ],
-                "fingerprint": "1544457123260",
+                "fingerprint": "1544627549421",
                 "parentFolderId": "5",
                 "formatValue": {}
             },
@@ -130,82 +130,6 @@
                 "fingerprint": "1544457267537",
                 "parentFolderId": "5",
                 "formatValue": {}
-            },
-            {
-                "accountId": "136157975",
-                "containerId": "10605599",
-                "variableId": "6",
-                "name": "UA Settings",
-                "type": "gas",
-                "parameter": [
-                    {
-                        "type": "TEMPLATE",
-                        "key": "cookieDomain",
-                        "value": "auto"
-                    },
-                    {
-                        "type": "BOOLEAN",
-                        "key": "doubleClick",
-                        "value": "false"
-                    },
-                    {
-                        "type": "BOOLEAN",
-                        "key": "setTrackerName",
-                        "value": "false"
-                    },
-                    {
-                        "type": "BOOLEAN",
-                        "key": "useDebugVersion",
-                        "value": "false"
-                    },
-                    {
-                        "type": "LIST",
-                        "key": "fieldsToSet",
-                        "list": [
-                            {
-                                "type": "MAP",
-                                "map": [
-                                    {
-                                        "type": "TEMPLATE",
-                                        "key": "fieldName",
-                                        "value": "anonymizeIp"
-                                    },
-                                    {
-                                        "type": "TEMPLATE",
-                                        "key": "value",
-                                        "value": "1"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "BOOLEAN",
-                        "key": "useHashAutoLink",
-                        "value": "false"
-                    },
-                    {
-                        "type": "BOOLEAN",
-                        "key": "decorateFormsAutoLink",
-                        "value": "false"
-                    },
-                    {
-                        "type": "BOOLEAN",
-                        "key": "enableLinkId",
-                        "value": "false"
-                    },
-                    {
-                        "type": "BOOLEAN",
-                        "key": "enableEcommerce",
-                        "value": "false"
-                    },
-                    {
-                        "type": "TEMPLATE",
-                        "key": "trackingId",
-                        "value": "UA-56241841-2"
-                    }
-                ],
-                "fingerprint": "1544476309695"
             }
         ],
         "folder": [
