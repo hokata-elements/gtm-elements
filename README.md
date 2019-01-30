@@ -42,6 +42,7 @@ uaData-Event Trigger and Analytics-Event Tag to send this data to GA as event.
 8. GTM_elements.crossdomain
 
 ## [Live Demo](https://elements.digital/playground/GTM-Elements/demo/) incl. Info Layer:
+https://elements.digital/playground/GTM-Elements/demo/
 - Session Start (GTM_elements.session.data.start)
 - Session Source (GTM_elements.session.data.source)
 - Session Medium (GTM_elements.session.data.medium)
