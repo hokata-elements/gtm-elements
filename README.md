@@ -12,7 +12,7 @@ Useful Google Tag Manager Scripts
 2. Info HTML-Layer for most important GTM Values
 3. Additional Page-Performace Data (send to GA in one single event)
    - Count of redirects on current Host
-   - Navigation Type ("navigate", "reload", "back_forward" or "prerender)
+   - Navigation Type ("navigate", "reload", "back_forward" or "prerender")
    - Time to first Byte
    - First Paint
    - First Contenful paint
