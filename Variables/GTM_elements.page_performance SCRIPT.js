@@ -13,7 +13,8 @@ function() {
     page_performance.data.FID = ''; // First Input Delay, better as Event: (https://github.com/GoogleChromeLabs/first-input-delay)
   };
   
-  page_performance.Init = function() {
+  page_performance.Init = function(uaEventName) {
+    page_performance.uaEventName = uaEventName || 'uaData';
     page_performance.Config();
     
     if (!!window.PerformanceNavigation) {
@@ -21,14 +22,14 @@ function() {
       
       var perfEntries = performance.getEntriesByType("navigation");
       var perfEntry = perfEntries[0].toJSON();
-console.log(perfEntry);
+      
       page_performance.data.redirectCount = perfEntry.redirectCount;
       page_performance.data.navigationType = perfEntry.type;
       page_performance.data.TTFB = page_performance.convertTimestamp(perfEntry.responseStart);
-
+      
       page_performance.trackPaint(window.performance);
       
-      if(typeof PerformanceObserver != "undefined" && (page_performance.data.FP == '-' || page_performance.data.FCP == '-')){
+      if(page_performance.data.FP == '-' || page_performance.data.FCP == '-'){
         var observer = new PerformanceObserver(function(list, obj) {
           page_performance.trackPaint(list);
         });
@@ -48,8 +49,7 @@ console.log(perfEntry);
         page_performance.data.FCP = page_performance.convertTimestamp(perfEntry.startTime);
       }
     }
-    var pushNow = false;
-    if(typeof PerformanceObserver == "undefined" || (page_performance.data.FP != '-' && page_performance.data.FCP != '-')){
+    if(page_performance.data.FP != '-' && page_performance.data.FCP != '-'){
       window.dataLayer = window.dataLayer || [];
       
       var aInfo = ['redirectCount', 'navigationType', 'TTFB', 'FP', 'FCP'];
@@ -61,14 +61,13 @@ console.log(perfEntry);
       }
       
       window.dataLayer.push({
-        'event' : 'uaData',
+        'event' : page_performance.uaEventName,
         'eventCategory':'Performance',
         'eventAction':aAction.join('|'),
         'eventLabel':aLabel.join('|'),
         'eventValue':page_performance.data.FCP
       });
       // console.log(aAction.join('|')+' ~ '+aLabel.join('|'));
-      
     }
   };
     

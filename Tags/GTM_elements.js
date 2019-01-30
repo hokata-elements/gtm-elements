@@ -14,25 +14,41 @@
    * - GTM_elements.crossdomain: [in progress...]
    *
    */
-  (function(document) {
-	window.dataLayer = window.dataLayer || [];
-    var GTM_elements = {};
-    GTM_elements.sessionData = {};
+   (function(document) {
+    window.dataLayer = window.dataLayer || [];
     
+    // setup GTM_elements as empty object
+    var GTM_elements = {};
+    
+    // Load GTM_elements.session SCRIPT as object from a custom JavaScript Variable
     GTM_elements.session = {{GTM_elements.session SCRIPT}}();
-    GTM_elements.session.Init();
-  
+    // Init GTM_elements.session script
+    GTM_elements.session.Init('YOUR_PAGE_TYPE_IF_AVAILABLE');
+    
+    // Load GTM_elements.page_performance SCRIPT as object from a custom JavaScript Variable
     GTM_elements.page_performance = {{GTM_elements.page_performance SCRIPT}}();
+    // Init GTM_elements.page_performance script
     GTM_elements.page_performance.Init();
-  
-    if(1 || {{Debug Mode}}){
-      GTM_elements.info_layer = {{GTM_elements.info_layer SCRIPT}}();    
+    
+    // check GTM Debug Mode and draw Info Layer
+    if({{Debug Mode}}){
+    
+     // Load GTM_elements.info_layer SCRIPT as object from a custom JavaScript Variable
+      GTM_elements.info_layer = {{GTM_elements.info_layer SCRIPT}}(); 
+      
+      // prepare date info
       var sDate = '-';
+      
+      // check cached session data
       if(GTM_elements.session.data && GTM_elements.session.data.start){
         var aDate = new Date(GTM_elements.session.data.start);
         sDate = aDate.toLocaleString('de-DE');
       }
+      
+      // Init GTM_elements.info_layer script
       GTM_elements.info_layer.Init();
+      
+      // prepare information layer data
       GTM_elements.info_layer.infoVars = {
         'Session Start' : sDate,
         'Session Source' : GTM_elements.session.data.source,
@@ -43,6 +59,7 @@
         'Performance FP' : GTM_elements.page_performance.data.FP,
         'Performance FCP' : GTM_elements.page_performance.data.FCP,
       };
+      // draw information layer
       GTM_elements.info_layer.UpdateInfoLayer();
     }
     

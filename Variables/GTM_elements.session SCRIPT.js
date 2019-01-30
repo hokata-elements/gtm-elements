@@ -14,7 +14,7 @@ function() {
     session.data.utm = {};
   
     session.oRef = session.GetDomainData(document.referrer);
-    session.oLocation = session.GetDomainData(document.location.hostname);
+    session.oLocation = session.GetDomainData(document.location.href);
     var sCurrentDomain = session.oLocation.domain;
   
     session.oRefExclude = {};
@@ -43,23 +43,25 @@ function() {
       'pinterest.com' : 'social',
       'linkedin.com' : 'social',
       'xing.com' : 'social',
+      'blog.ratioform.de' : 'social',
       'blog' : 'social',
       // display
       'criteo' : 'display',
     };
   
-    session.aPageTypeExclude = {
-      'checkout.success':'payment'
-    };
+    session.aPageTypeExclude = [];
   };
   
-  session.Init = function() {
+  session.Init = function(sPageType) {
+    sPageType = sPageType || "";
     session.Config();
     
-    session.newSession = session.CheckNewSession();
+    session.newSession = session.CheckNewSession(sPageType);
     
     if(session.newSession){
       session.data.start = new Date().getTime();
+      session.data.pageType = sPageType;
+      session.data.landingPage = document.location.href;
       session.ProcessSourceMediumCampaign();
       session.BrowserDataWrite('GTM_elements.session.data', session.data);
     }else{
@@ -67,15 +69,21 @@ function() {
     }
   };
   
-  session.CheckNewSession = function(){
+  session.CheckNewSession = function(sPageType){
     var bNew = true;
     if(session.oRef && (session.oRefExclude[session.oRef.hostname] || session.oRefExclude[session.oRef.domain] || session.oRefExclude[session.oRef.main_domain]) ){
       bNew = false;
     }
+    
+    for(var i = 0; i < session.aPageTypeExclude; i++) {
+      if(sPageType == session.aPageTypeExclude[i]){
+        bNew = false;
+      }
+    }
+    
     if(session.getUrlParams.utm_source && session.getUrlParams.utm_medium){
       bNew = true;
     }
-    // ToDo: Check PageType
     return bNew;
   };
   

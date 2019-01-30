@@ -16,8 +16,8 @@ function() {
     info_layer.AddInfoLayer = function(){
       if(info_layer.bgColor){
         //document.body.style.backgroundColor = info_layer.bgColor;
-        //document.body.style.borderLeft = '50px solid '+info_layer.bgColor;
-        //document.body.style.borderRight = '50px solid '+info_layer.bgColor;
+        document.body.style.borderLeft = '50px solid '+info_layer.bgColor;
+        document.body.style.borderRight = '50px solid '+info_layer.bgColor;
       }
 
       var elem = document.createElement('div');
