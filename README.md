@@ -64,7 +64,7 @@ uaData-Event Trigger and Analytics-Event Tag to send this data to GA as event.
     // Load GTM_elements.session SCRIPT as object from a custom JavaScript Variable
     GTM_elements.session = {{GTM_elements.session SCRIPT}}();
     // Init GTM_elements.session script
-    GTM_elements.session.Init();
+    GTM_elements.session.Init('YOUR_PAGE_TYPE_IF_AVAILABLE');
     
     // Load GTM_elements.page_performance SCRIPT as object from a custom JavaScript Variable
     GTM_elements.page_performance = {{GTM_elements.page_performance SCRIPT}}();
