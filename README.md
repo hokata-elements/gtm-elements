@@ -5,7 +5,7 @@ Useful Google Tag Manager Scripts
 ![GTM Elements Structure](https://raw.githubusercontent.com/hokata-elements/gtm-elements/master/img/GTM-elements-structure.png)
 
 ## Implemented functions as GTM Variables
-1. Data object with Session relevant Informations (cached data in sessionStorage)
+1. Data object with Session relevant Informations (cached data in localStorage)
    - start
    - source
    - medium
@@ -137,7 +137,6 @@ default **source / medium** settings
       'pinterest.com' : 'social',
       'linkedin.com' : 'social',
       'xing.com' : 'social',
-      'blog' : 'social',
       // display
       'criteo' : 'display',
     };
