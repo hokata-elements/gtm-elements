@@ -6,14 +6,17 @@ function() {
   session.Config = function() {
     session.getUrlParams = session.GetUrlParams();
     session.newSession = undefined;
+    session.timeout = 30; // minutes
     
     session.data = {};
     session.data.start = undefined;
     session.data.source = '(direct)';
     session.data.medium = '(none)';
     session.data.utm = {};
+    session.data.sessionType = '-';
   
     session.oRef = session.GetDomainData(document.referrer);
+    //session.oLocation = session.GetDomainData(document.location.hostname);
     session.oLocation = session.GetDomainData(document.location.href);
     var sCurrentDomain = session.oLocation.domain;
   
@@ -43,8 +46,6 @@ function() {
       'pinterest.com' : 'social',
       'linkedin.com' : 'social',
       'xing.com' : 'social',
-      'blog.ratioform.de' : 'social',
-      'blog' : 'social',
       // display
       'criteo' : 'display',
     };
@@ -56,35 +57,52 @@ function() {
     sPageType = sPageType || "";
     session.Config();
     
-    session.newSession = session.CheckNewSession(sPageType);
+    if(session.BrowserDataRead('GTM_elements.session.data')){
+      session.data = session.BrowserDataRead('GTM_elements.session.data');
+      session.newSession = session.CheckNewSession(sPageType);
+    }else{
+      session.data.sessionType = 'new';
+      session.newSession = true;
+    }
     
     if(session.newSession){
       session.data.start = new Date().getTime();
       session.data.pageType = sPageType;
       session.data.landingPage = document.location.href;
       session.ProcessSourceMediumCampaign();
-      session.BrowserDataWrite('GTM_elements.session.data', session.data);
-    }else{
-      session.data = session.BrowserDataRead('GTM_elements.session.data');
     }
+    session.data.lastInteraction = new Date().getTime();
+    session.BrowserDataWrite('GTM_elements.session.data', session.data);
   };
   
   session.CheckNewSession = function(sPageType){
-    var bNew = true;
+    
+    if(!session.data.lastInteraction || session.data.lastInteraction - session.data.start > session.timeout*1000*60){
+      if(!session.data.lastInteraction){
+        session.data.sessionType = 'no lastInteraction';
+      }else{
+        session.data.sessionType = 'old lastInteraction';
+      }
+      return true;
+    }
+    
+    if(session.getUrlParams.utm_source && session.getUrlParams.utm_medium){
+      session.data.sessionType = 'utm';
+      return true;
+    }
+    
     if(session.oRef && (session.oRefExclude[session.oRef.hostname] || session.oRefExclude[session.oRef.domain] || session.oRefExclude[session.oRef.main_domain]) ){
-      bNew = false;
+      return false;
     }
     
     for(var i = 0; i < session.aPageTypeExclude; i++) {
       if(sPageType == session.aPageTypeExclude[i]){
-        bNew = false;
+        return false;
       }
     }
     
-    if(session.getUrlParams.utm_source && session.getUrlParams.utm_medium){
-      bNew = true;
-    }
-    return bNew;
+    session.data.sessionType = 'other';
+    return true;
   };
   
   session.ProcessSourceMediumCampaign = function(){
@@ -138,20 +156,20 @@ function() {
   
   // read persisted information
   session.BrowserDataRead = function(dataName){
-    var returnData = sessionStorage.getItem(dataName);
+    var returnData = localStorage.getItem(dataName);
     return JSON.parse(returnData);
   };
 
   // persist information
   session.BrowserDataWrite = function(dataName, data){
     var jsonData = JSON.stringify(data);
-    sessionStorage.setItem(dataName, jsonData);
+    localStorage.setItem(dataName, jsonData);
     return true;
   };
 
   // delete persisted data
   session.BrowserDataDelete = function(dataName){
-    sessionStorage.removeItem(dataName);
+    localStorage.removeItem(dataName);
   };
 
   session.GetUrlParams = function() {
