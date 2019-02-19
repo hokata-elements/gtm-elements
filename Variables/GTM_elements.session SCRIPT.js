@@ -59,7 +59,9 @@ function() {
     session.Config();
     
     session.previousData = session.BrowserDataRead('GTM_elements.session.data');
-    session.data.lastInteraction = session.previousData.lastInteraction || "";
+    if(session.previousData){
+      session.data.lastInteraction = session.previousData.lastInteraction || "";
+    }
     session.newSession = session.CheckNewSession(sPageType);
     
     if(!session.previousData){
