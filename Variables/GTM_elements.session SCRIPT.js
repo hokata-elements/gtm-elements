@@ -6,6 +6,8 @@ function() {
   session.Config = function() {
     session.getUrlParams = session.GetUrlParams();
     session.newSession = undefined;
+    session.newSessionType = undefined;
+    session.utmOverwriteMedium = false;
     session.timeout = 30; // minutes
     
     session.data = {};
@@ -16,7 +18,6 @@ function() {
     session.data.sessionType = '-';
   
     session.oRef = session.GetDomainData(document.referrer);
-    //session.oLocation = session.GetDomainData(document.location.hostname);
     session.oLocation = session.GetDomainData(document.location.href);
     var sCurrentDomain = session.oLocation.domain;
   
@@ -57,11 +58,12 @@ function() {
     sPageType = sPageType || "";
     session.Config();
     
-    if(session.BrowserDataRead('GTM_elements.session.data')){
-      session.data = session.BrowserDataRead('GTM_elements.session.data');
-      session.newSession = session.CheckNewSession(sPageType);
-    }else{
-      session.data.sessionType = 'new';
+    session.previousData = session.BrowserDataRead('GTM_elements.session.data');
+    session.data.lastInteraction = session.previousData.lastInteraction || "";
+    session.newSession = session.CheckNewSession(sPageType);
+    
+    if(!session.previousData){
+      session.newSessionType = 'new visitor';
       session.newSession = true;
     }
     
@@ -69,40 +71,58 @@ function() {
       session.data.start = new Date().getTime();
       session.data.pageType = sPageType;
       session.data.landingPage = document.location.href;
+      session.data.sessionType = session.newSessionType;
       session.ProcessSourceMediumCampaign();
+    }else{
+      session.data = session.previousData;
     }
     session.data.lastInteraction = new Date().getTime();
     session.BrowserDataWrite('GTM_elements.session.data', session.data);
+    
+    
+    console.log('session.Init');
+    console.log(session.newSession);
+    console.log(document.location.hostname);
+    console.log(session.oLocation);
+    console.log(session.oRefExclude);
+    console.log(session.data);
+    console.log(session.oRef);
+    
   };
   
   session.CheckNewSession = function(sPageType){
+    var bNewSession = false;
     
-    if(!session.data.lastInteraction || session.data.lastInteraction - session.data.start > session.timeout*1000*60){
-      if(!session.data.lastInteraction){
-        session.data.sessionType = 'no lastInteraction';
+    if(session.oRef){
+      if(session.oRefExclude[session.oRef.hostname] || session.oRefExclude[session.oRef.domain] || session.oRefExclude[session.oRef.main_domain]){
+        session.newSessionType = 'referral exclude';
       }else{
-        session.data.sessionType = 'old lastInteraction';
+        session.newSessionType = 'referral';
+        bNewSession = true;
       }
-      return true;
+    }
+    
+    if(sPageType){
+      for(var i = 0; i < session.aPageTypeExclude; i++) {
+        if(sPageType == session.aPageTypeExclude[i]){
+          session.newSessionType = 'pagetype exclude';
+        }
+      }
     }
     
     if(session.getUrlParams.utm_source && session.getUrlParams.utm_medium){
-      session.data.sessionType = 'utm';
-      return true;
-    }
-    
-    if(session.oRef && (session.oRefExclude[session.oRef.hostname] || session.oRefExclude[session.oRef.domain] || session.oRefExclude[session.oRef.main_domain]) ){
-      return false;
-    }
-    
-    for(var i = 0; i < session.aPageTypeExclude; i++) {
-      if(sPageType == session.aPageTypeExclude[i]){
-        return false;
+      session.newSessionType = 'utm';
+      bNewSession = true;
+    }else if(!session.data.lastInteraction || session.data.lastInteraction - session.data.start > session.timeout*1000*60){
+      if(!session.data.lastInteraction){
+        session.newSessionType = 'last interaction missing';
+      }else{
+        session.newSessionType = 'last interaction timeout';
       }
+      bNewSession = true;
     }
-    
-    session.data.sessionType = 'other';
-    return true;
+
+    return bNewSession;
   };
   
   session.ProcessSourceMediumCampaign = function(){
@@ -116,7 +136,7 @@ function() {
       session.data.source = 'google';
       session.data.medium = session.getUrlParams.gclid ? 'cpc' : 'cpm';
     }else if(session.data.utm.source && session.data.utm.medium){
-      if(session.oRefInclude[session.data.utm.source]){
+      if(session.utmOverwriteMedium && session.oRefInclude[session.data.utm.source]){
         session.data.source = session.data.utm.source;
         session.data.medium = session.oRefInclude[session.data.utm.source];
       }else{
@@ -124,7 +144,9 @@ function() {
         session.data.medium = session.data.utm.medium;
       }
     }else if(session.oRef){
-      if(session.oRefInclude[session.oRef.hostname]){
+      if(session.oRefExclude[session.oRef.hostname] || session.oRefExclude[session.oRef.domain] || session.oRefExclude[session.oRef.main_domain]){
+        // leave at the default values
+      }else if(session.oRefInclude[session.oRef.hostname]){
         session.data.source = session.oRef.hostname;
         session.data.medium = session.oRefInclude[session.oRef.hostname];
       }else if(session.oRefInclude[session.oRef.domain]){
@@ -132,7 +154,7 @@ function() {
         session.data.medium = session.oRefInclude[session.oRef.domain];    
       }else if(session.oRefInclude[session.oRef.main_domain]){
         session.data.source = session.oRef.main_domain;
-        session.data.medium = session.oRefInclude[session.oRef.main_domain];  
+        session.data.medium = session.oRefInclude[session.oRef.main_domain];
       }else{
         session.data.source = session.oRef.hostname;
         session.data.medium = 'referral';
