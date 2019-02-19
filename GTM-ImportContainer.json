@@ -1,6 +1,6 @@
 {
     "exportFormatVersion": 2,
-    "exportTime": "2019-02-19 14:21:21",
+    "exportTime": "2019-02-19 14:39:05",
     "containerVersion": {
         "path": "accounts/136157975/containers/10605599/versions/0",
         "accountId": "136157975",
@@ -15,7 +15,7 @@
             "usageContext": [
                 "WEB"
             ],
-            "fingerprint": "1550586052026",
+            "fingerprint": "1550587045125",
             "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/136157975/containers/10605599/workspaces?apiLink=container"
         },
         "tag": [
@@ -43,6 +43,87 @@
                 ],
                 "parentFolderId": "5",
                 "tagFiringOption": "ONCE_PER_EVENT"
+            },
+            {
+                "accountId": "136157975",
+                "containerId": "10605599",
+                "tagId": "3",
+                "name": "UA Event Data",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "nonInteraction",
+                        "value": "true"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "overrideGaSettings",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventValue",
+                        "value": "{{UA EventValue}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventCategory",
+                        "value": "{{UA EventCategory}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_EVENT"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "gaSettings",
+                        "value": "{{UA Settings}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventAction",
+                        "value": "{{UA EventAction}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventLabel",
+                        "value": "{{UA EventLabel}}"
+                    }
+                ],
+                "fingerprint": "1550587035049",
+                "firingTriggerId": [
+                    "25"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT"
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "136157975",
+                "containerId": "10605599",
+                "triggerId": "25",
+                "name": "UA Data",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "uaData"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1550587009165"
             }
         ],
         "variable": [
@@ -129,6 +210,110 @@
                 ],
                 "fingerprint": "1549384059132",
                 "parentFolderId": "5",
+                "formatValue": {}
+            },
+            {
+                "accountId": "136157975",
+                "containerId": "10605599",
+                "variableId": "8",
+                "name": "UA EventAction",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "eventAction"
+                    }
+                ],
+                "fingerprint": "1550586825650",
+                "formatValue": {}
+            },
+            {
+                "accountId": "136157975",
+                "containerId": "10605599",
+                "variableId": "7",
+                "name": "UA EventCategory",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "eventCategory"
+                    }
+                ],
+                "fingerprint": "1550586807095",
+                "formatValue": {}
+            },
+            {
+                "accountId": "136157975",
+                "containerId": "10605599",
+                "variableId": "9",
+                "name": "UA EventLabel",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "eventLabel"
+                    }
+                ],
+                "fingerprint": "1550586850920",
+                "formatValue": {}
+            },
+            {
+                "accountId": "136157975",
+                "containerId": "10605599",
+                "variableId": "10",
+                "name": "UA EventValue",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "eventValue"
+                    }
+                ],
+                "fingerprint": "1550586864847",
                 "formatValue": {}
             }
         ],
