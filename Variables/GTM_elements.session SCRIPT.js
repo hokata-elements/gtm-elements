@@ -9,6 +9,7 @@ function() {
     session.newSessionType = undefined;
     session.utmOverwriteMedium = false;
     session.timeout = 30; // minutes
+    session.timeNow = new Date().getTime();
     
     session.data = {};
     session.data.start = undefined;
@@ -16,8 +17,10 @@ function() {
     session.data.medium = '(none)';
     session.data.utm = {};
     session.data.sessionType = '-';
+    session.data.lastNonDirect = {};
   
     session.oRef = session.GetDomainData(document.referrer);
+    //session.oLocation = session.GetDomainData(document.location.hostname);
     session.oLocation = session.GetDomainData(document.location.href);
     var sCurrentDomain = session.oLocation.domain;
   
@@ -61,6 +64,7 @@ function() {
     session.previousData = session.BrowserDataRead('GTM_elements.session.data');
     if(session.previousData){
       session.data.lastInteraction = session.previousData.lastInteraction || "";
+      session.data.start = session.previousData.start || "";
     }
     session.newSession = session.CheckNewSession(sPageType);
     
@@ -70,7 +74,7 @@ function() {
     }
     
     if(session.newSession){
-      session.data.start = new Date().getTime();
+      session.data.start = session.timeNow;
       session.data.pageType = sPageType;
       session.data.landingPage = document.location.href;
       session.data.sessionType = session.newSessionType;
@@ -78,17 +82,15 @@ function() {
     }else{
       session.data = session.previousData;
     }
-    session.data.lastInteraction = new Date().getTime();
+    session.data.lastInteraction = session.timeNow;
+    if(session.newSession && session.data.source != '(direct)' && session.data.medium != '(none)'){
+      session.data.lastNonDirect.source = session.data.source;
+      session.data.lastNonDirect.medium = session.data.medium;
+      session.data.lastNonDirect.date = session.data.start;
+    }else{
+      session.data.lastNonDirect = session.previousData.lastNonDirect;
+    }
     session.BrowserDataWrite('GTM_elements.session.data', session.data);
-    
-    
-    console.log('session.Init');
-    console.log(session.newSession);
-    console.log(document.location.hostname);
-    console.log(session.oLocation);
-    console.log(session.oRefExclude);
-    console.log(session.data);
-    console.log(session.oRef);
     
   };
   
@@ -115,7 +117,7 @@ function() {
     if(session.getUrlParams.utm_source && session.getUrlParams.utm_medium){
       session.newSessionType = 'utm';
       bNewSession = true;
-    }else if(!session.data.lastInteraction || session.data.lastInteraction - session.data.start > session.timeout*1000*60){
+    }else if(!session.data.lastInteraction || session.timeNow - session.data.lastInteraction > session.timeout*1000*60){
       if(!session.data.lastInteraction){
         session.newSessionType = 'last interaction missing';
       }else{
@@ -148,6 +150,7 @@ function() {
     }else if(session.oRef){
       if(session.oRefExclude[session.oRef.hostname] || session.oRefExclude[session.oRef.domain] || session.oRefExclude[session.oRef.main_domain]){
         // leave at the default values
+        
       }else if(session.oRefInclude[session.oRef.hostname]){
         session.data.source = session.oRef.hostname;
         session.data.medium = session.oRefInclude[session.oRef.hostname];

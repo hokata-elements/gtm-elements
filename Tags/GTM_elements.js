@@ -1,6 +1,6 @@
-<script id="GTM_elements_v01">
+<script id="GTM_elements_v03">
   /**
-   * GTM_elements Version 0.1 is the basepart of alls GTM_elements
+   * GTM_elements Version 0.3 is the basepart of alls GTM_elements
    *
    * avilable GTM_elements
    * - GTM_elements.session: Data object with Session relevant Informations
