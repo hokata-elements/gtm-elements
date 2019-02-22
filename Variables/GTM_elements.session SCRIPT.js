@@ -87,8 +87,8 @@ function() {
       session.data.lastNonDirect.source = session.data.source;
       session.data.lastNonDirect.medium = session.data.medium;
       session.data.lastNonDirect.date = session.data.start;
-    }else{
-      session.data.lastNonDirect = session.previousData.lastNonDirect;
+    }else if(session.previousData){
+      session.data.lastNonDirect = session.previousData.lastNonDirect || "";
     }
     session.BrowserDataWrite('GTM_elements.session.data', session.data);
     
